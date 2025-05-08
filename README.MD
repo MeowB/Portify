@@ -56,10 +56,3 @@ The frontend is built with **React** and **TypeScript** using **Vite** as the bu
 - **`normalize.scss`**: Normalizes styles and includes font imports.
 
 ---
-
-## Installation and Setup
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd porfolio-manager/front-end
