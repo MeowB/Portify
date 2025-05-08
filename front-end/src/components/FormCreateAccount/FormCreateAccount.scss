@@ -1,0 +1,25 @@
+.password-validation {
+	ul {
+		list-style: none;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr 1fr 1fr;
+
+		li {
+			display: flex;
+			align-items: center;
+			margin: 7px 6px;
+			font-size: 12px;
+
+
+			span {
+				display: flex;
+				margin-right: 4px;
+
+				img {
+					width: 16px;
+				}
+			}
+		}
+	}
+}

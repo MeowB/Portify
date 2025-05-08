@@ -1,0 +1,155 @@
+@use '../../style/variables.scss' as vars;
+
+.drop-area {
+	border: 2px dashed #ccc;
+	padding: 20px;
+	transition: background-color 0.3s ease;
+}
+
+.drag-over {
+	background-color: #fff !important;
+	/* Light gray when hovering */
+	border: 2px solid #4caf50;
+	/* Change border color */
+}
+
+.profile-settings {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	.title {
+		margin-top: 40px;
+		width: 720px;
+	}
+
+	.profile-form {
+		padding: 20px 16px 24px 16px;
+		width: 720px;
+		margin-top: 40px;
+		border-radius: 8px;
+		border: 1px solid vars.$c-light-gray;
+
+		form {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			grid-template-rows: 3fr 1fr 1fr 2fr 0.5fr;
+
+			input,
+			textarea {
+				box-shadow: 0 4px 4px #ddd;
+				border: 1px solid vars.$c-light-gray;
+			}
+
+			.form-group {
+				display: flex;
+				flex-direction: column;
+
+				input {
+					margin-top: 4px;
+				}
+
+				padding: 8px;
+			}
+
+			.image {
+				grid-column-start: 1;
+				grid-column-end: 3;
+				position: relative;
+				background-color: #f2f5f9;
+				border-radius: 8px;
+
+
+
+
+				input {
+					border: none;
+					height: 100%;
+					display: none;
+				}
+
+				.dropzone {
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					top: 0;
+					left: 0;
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+
+					.profile-image {
+						width: 40px;
+						height: 40px;
+						border-radius: 50%;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						background-color: #cdd5e0;
+						overflow: hidden;
+
+						img {
+							max-height: 40px;
+							margin: auto;
+						}
+
+					}
+
+					p {
+						margin-top: 16px;
+						color: vars.$c-dark-gray;
+					}
+
+					.buttons {
+						display: flex;
+						position: relative;
+						z-index: 55;
+
+						button {
+							border: none;
+							background-color: vars.$c-white;
+							margin: 12px 6px;
+							box-shadow: 0 4px 4px #ddd;
+							border-radius: 8px;
+							padding: 10px 12px;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+						}
+					}
+				}
+			}
+
+			.bio {
+				grid-column-start: 1;
+				grid-column-end: 3;
+				grid-row-start: 4;
+				grid-row-end: 5;
+
+				textarea {
+					height: 100%;
+					border-radius: 8px;
+					padding: 10px 12px;
+					resize: none;
+				}
+			}
+
+			button[type=submit] {
+				width: 80px;
+				height: 33px;
+				grid-column-start: 2;
+				grid-column-end: 3;
+				grid-row-start: 5;
+				grid-row-end: 6;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				line-height: 0;
+				justify-self: flex-end;
+			}
+		}
+	}
+}

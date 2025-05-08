@@ -1,0 +1,44 @@
+// Color Variables
+$c-dark-gray: #677489;
+$c-dark-blue: #20293A;
+$c-primary-blue: #6466E9;
+$c-light-gray: #E3E8EF;
+$c-soft-blue: #A8B4F6;
+$c-white: #FFFFFF;
+$c-black: #000000;
+
+@mixin heading {
+	font-weight: 600; // Semibold
+	font-size: 2rem; // 32px
+	line-height: 1.5;
+}
+
+@mixin profile-name {
+	font-weight: 600; // Semibold
+	font-size: 1.5rem; // 24px
+	line-height: 1.5;
+}
+
+@mixin small-heading {
+	font-weight: 600; // Semibold
+	font-size: 1.25rem; // 20px
+	line-height: 1.5;
+}
+
+@mixin label-text {
+	font-weight: 500; // Medium
+	font-size: 1rem; // 16px
+	line-height: 1.5;
+}
+
+@mixin input-label {
+	font-weight: 400; // Regular
+	font-size: 0.875rem; // 14px
+	line-height: 1.5;
+}
+
+@mixin extra-small-text {
+	font-weight: 400; // Regular
+	font-size: 0.625rem; // 10px
+	line-height: 1.5;
+}

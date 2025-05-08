@@ -1,0 +1,107 @@
+@use '../../style/variables.scss' as vars;
+
+.home {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1.5fr 2fr;
+	height: calc(100vh - 48px);
+
+	aside {
+		background-image: url('../../resources/login-bg.png');
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		height: 100%;
+		width: auto;
+		margin: 24px;
+		border-radius: 12px;
+
+		display: flex;
+		flex-direction: column;
+		padding: 40px 24px;
+		color: vars.$c-white;
+
+		.title {
+			@include vars.small-heading;
+		}
+
+		.text {
+			@include vars.input-label;
+			margin-top: 12px;
+			padding-right: 60px;
+		}
+	}
+
+	.form-wrapper {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		section {
+			width: 400px;
+
+			.github-login {
+				button {
+					background-color: vars.$c-dark-blue;
+					color: vars.$c-white;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					width: 100%;
+					margin-top: 26px;
+					padding: 10px;
+					border-radius: 8px;
+					border: none;
+
+					span {
+						@include vars.input-label;
+						display: flex;
+						margin-right: 8px;
+					}
+				}
+			}
+
+			.splitter {
+				width: 100%;
+				position: relative;
+				display: flex;
+				justify-content: center;
+				margin-top: 14px;
+
+				.line {
+					position: absolute;
+					bottom: 45%;
+					border-bottom: 1px solid vars.$c-light-gray;
+					width: 100%;
+				}
+
+				p {
+					width: 26px;
+					position: relative;
+					display: flex;
+					justify-content: center;
+					background-color: vars.$c-white;
+					z-index: 1;
+				}
+			}
+
+			form {
+				margin-top: 2px;
+
+
+				.forgot-pswd {
+					margin-top: 8px;
+					display: flex;
+					font-size: 12px;
+
+					a {
+						margin-left: auto;
+						color: vars.$c-soft-blue;
+					}
+				}
+
+			}
+		}
+	}
+}
