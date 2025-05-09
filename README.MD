@@ -56,6 +56,7 @@ The frontend is built with **React** and **TypeScript** using **Vite** as the bu
 - **`normalize.scss`**: Normalizes styles and includes font imports.
 
 ---
+<<<<<<< HEAD
 
 ## Installation and Setup
 
@@ -120,3 +121,5 @@ The frontend is built with **React** and **TypeScript** using **Vite** as the bu
   - Delete a project by its ID.
 
 ---
+=======
+>>>>>>> 4883fc49474efa18454f0177ea1f7ffe384f5c2d
