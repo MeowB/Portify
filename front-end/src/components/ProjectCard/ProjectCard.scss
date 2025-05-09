@@ -1,0 +1,72 @@
+@use '../../style/variables.scss' as vars;
+
+.project {
+	border: 1px solid vars.$c-light-gray;
+	display: flex;
+	width: 100%;
+	padding: 12px;
+	margin-top: 36px;
+	border-radius: 8px;
+
+	.image-wrapper {
+		width: 220px;
+		flex-shrink: 0;
+
+		img {
+			width: 100%;
+			height: auto;
+			display: block;
+			border-radius: 8px;
+		}
+	}
+
+	.project-content {
+		width: 447px;
+		padding-left: 24px;
+
+		.project-text {
+			flex-direction: column;
+
+			.project-title {
+				width: 100%;
+				font-size: 16px;
+				text-align: left;
+			}
+
+			.description {
+				font-size: 14px;
+				margin-top: 8px;
+				min-height: 60px;
+
+
+			}
+		}
+
+		.edit-button {
+			padding: 8px 12px;
+			border-radius: 8px;
+			border: none;
+			margin-top: 16px;
+			background-color: #f2f5f9;
+
+			span {
+				margin-right: 6px;
+			}
+		}
+
+		.repository-button,
+		.demo-button {
+			padding: 8px 12px;
+			border-radius: 8px;
+			border: none;
+			margin-top: 16px;
+			background-color: transparent;
+			border: 1px solid vars.$c-light-gray;
+			margin-right: 12px;
+
+			span {
+				margin-left: 6px;
+			}
+		}
+	}
+}

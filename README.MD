@@ -63,3 +63,60 @@ The frontend is built with **React** and **TypeScript** using **Vite** as the bu
    ```bash
    git clone <repository-url>
    cd porfolio-manager/front-end
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open your browser and navigate to `http://localhost:3000`.
+
+---
+
+## Backend API Endpoints
+
+### **Ping**
+- **GET** `/ping`
+  - Returns `pong` to verify the server is running.
+
+### **Projects**
+- **GET** `/api/projects`
+  - Fetch all projects.
+
+- **GET** `/api/projects/all/:id`
+  - Fetch all projects for a specific user by their ID.
+
+- **POST** `/api/projects/createProject`
+  - Create a new project.
+  - **Request Body**:
+    ```json
+    {
+      "userId": "number",
+      "image": "string",
+      "projectName": "string",
+      "demoUrl": "string",
+      "repositoryUrl": "string",
+      "description": "string"
+    }
+    ```
+
+- **PUT** `/api/projects/updateProject/:id`
+  - Update a project by its ID.
+  - **Request Body**:
+    ```json
+    {
+      "image": "string",
+      "projectName": "string",
+      "demoUrl": "string",
+      "repositoryUrl": "string",
+      "description": "string"
+    }
+    ```
+
+- **DELETE** `/api/projects/deleteProject/:id`
+  - Delete a project by its ID.
+
+---

@@ -1,7 +1,7 @@
 @use '../../style/variables.scss' as vars;
 
 
-.profile-settings {
+.projects-settings {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -13,10 +13,30 @@
 		width: 720px;
 	}
 
+	.add-project {
+		width: 720px;
+
+		.add-project-button {
+			text-align: start;
+			border-radius: 8px;
+			width: 100%;
+			padding: 16px;
+			background-color: #E1E7FD;
+			border: none;
+			color: #4138C2;
+			margin-top: 24px;
+			display: flex;
+
+			span {
+				margin-right: 6px;
+			}
+		}
+	}
+
 	.profile-form {
 		padding: 20px 16px 24px 16px;
 		width: 720px;
-		margin-top: 40px;
+		margin-top: 24px;
 		border-radius: 8px;
 		border: 1px solid vars.$c-light-gray;
 
@@ -24,6 +44,7 @@
 			display: grid;
 			grid-template-columns: 1fr 1fr;
 			grid-template-rows: 3fr 1fr 1fr 2fr 0.5fr;
+			margin-top: 24px;
 
 			input,
 			textarea {
@@ -42,7 +63,7 @@
 				padding: 8px;
 			}
 
-			.bio {
+			.description {
 				grid-column-start: 1;
 				grid-column-end: 3;
 				grid-row-start: 4;
@@ -56,23 +77,53 @@
 				}
 			}
 
-			button[type=submit] {
-				width: 80px;
-				height: 33px;
+			.form-buttons {
 				grid-column-start: 2;
 				grid-column-end: 3;
 				grid-row-start: 5;
 				grid-row-end: 6;
 				display: flex;
-				justify-content: center;
+				justify-content: flex-end;
 				align-items: center;
-				line-height: 0;
-				justify-self: flex-end;
+				gap: 8px;
 
-				span {
-					margin-right: 6px;
+				button {
+					width: 80px;
+					height: 33px;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					border: none;
+					line-height: 0;
+				}
+
+				button[type=submit] {
+					margin: 0;
+
+					span {
+						margin-right: 6px;
+					}
+				}
+
+				button[type=button] {
+					background-color: #f2f5f9;
+					border-radius: 8px;
+					width: auto;
+					padding: 8px 12px;
+
+					span {
+						margin-right: 6px;
+					}
 				}
 			}
 		}
+
 	}
+
+	.projects {
+		width: 720px;
+		margin-bottom: 125px;
+	
+	}	
+
 }

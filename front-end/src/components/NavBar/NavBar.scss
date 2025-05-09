@@ -1,0 +1,115 @@
+@use '../../style/variables.scss' as vars;
+
+nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 16px 24px;
+	border-bottom: 1px solid vars.$c-light-gray;
+
+	img {
+		height: 20px;
+		width: 20px;
+	}
+
+	.settings {
+		.profile-image{
+			position: relative;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: vars.$c-light-gray;
+		}
+
+		.tooltip {
+			top: 60px;
+			right: 22px;
+			position: absolute;
+			z-index: 1;
+			border: 1px solid vars.$c-light-gray;
+			border-radius: 8px;
+			background-color: vars.$c-white;
+			display: flex;
+			flex-direction: column;
+
+			.profile-preview {
+				display: flex;
+				margin-right: 50px;
+				gap: 12px;
+				width: 100%;
+				border-bottom: 1px solid vars.$c-light-gray;
+				padding: 18px 16px;
+
+				.text {
+					align-items: flex-start;
+
+					p:first-child {
+						font-weight: 800;
+					}
+
+					p:nth-child(2) {
+						font-size: 12px;
+						color: vars.$c-dark-gray;
+					}
+
+
+				}
+
+				img {
+					width: auto;
+					height: 40px;
+					border-radius: 50%;
+				}
+			}
+
+			.account-text {
+				color: vars.$c-dark-gray;
+				padding: 16px 0 0 16px;
+				font-size: 12px;
+			}
+
+			ul {
+				list-style: none;
+				padding: 0 16px;
+				border-bottom: 1px solid vars.$c-light-gray;
+				padding-bottom: 18px;
+
+				li {
+					display: flex;
+					align-items: center;
+					margin-top: 12px;
+
+					span {
+						display: flex;
+						margin-right: 10px;
+					}
+
+					.new-page {
+						margin-left: 5px;
+					}
+
+					a {
+						color: #000;
+					}
+				}
+			}
+
+			.logout {
+				padding: 16px;
+				display: flex;
+
+				span {
+					margin-right: 10px;
+				}
+
+				a {
+					color: red;
+					line-height: 24px;
+				}
+			}
+		}
+	}
+}

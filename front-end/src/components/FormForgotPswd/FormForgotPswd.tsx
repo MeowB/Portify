@@ -15,7 +15,7 @@ const FormForgotPswd = () => {
 
 
 				<div className="form-group">
-					<input type="email" id="email" name="email" placeholder="Enter a password" />
+					<input type="email" id="email" name="email" placeholder="Enter your email" />
 				</div>
 				<button type="submit">Reset Password</button>
 				<div className="link">

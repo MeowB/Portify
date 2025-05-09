@@ -1,0 +1,105 @@
+@use '../../style/variables.scss' as vars;
+
+.banner {
+	width: 100%;
+	max-height: 200px;
+	overflow: hidden;
+
+	img {
+		width: 100%;
+	}
+}
+
+.portfolio {
+	max-width: 720px;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	position: relative;
+
+	.profile-image {
+		position: absolute;
+		background-color: #fff;
+		width: 168px;
+		height: 168px;
+		border-radius: 50%;
+		transform: translateY(-50%);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		img {
+			width: 160px;
+			height: 160px;
+			border-radius: 50%;
+		}
+	}
+
+	.portfolio-content {
+		margin-top: 104px;
+
+		.title {
+			h1 {
+				@include vars.profile-name;
+			}
+
+			p {
+				@include vars.label-text;
+				color: vars.$c-dark-gray;
+			}
+		}
+
+		.contact-button {
+			display: flex;
+			padding: 8px 12px;
+			background-color: transparent;
+			border: 1px solid vars.$c-light-gray;
+			border-radius: 8px;
+			margin-top: 24px;
+
+			span {
+				margin-right: 6px;
+			}
+		}
+
+		.bio {
+			margin-top: 24px;
+			max-width: 75%;
+
+			h3 {
+				@include vars.input-label;
+				color: vars.$c-dark-gray;
+			}
+
+			p {
+				@include vars.label-text;
+				margin-top: 8px;
+			}
+		}
+	}
+
+	.projects {
+		border-top: 1px solid vars.$c-light-gray;
+		width: 100%;
+		margin-top: 36px;
+
+		h2 {
+			@include vars.label-text;
+			margin-top: 36px;
+			color: vars.$c-dark-gray;
+
+		}
+	}
+}
+
+footer {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	margin-top: 60px;
+	margin-bottom: 24px;
+
+	.power-by {
+		margin: 0 8px;
+	}
+}

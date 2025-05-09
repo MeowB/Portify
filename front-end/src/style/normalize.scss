@@ -11,27 +11,8 @@ a {
 	color: vars.$c-soft-blue;
 }
 
-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 16px 24px;
-	border-bottom: 1px solid vars.$c-light-gray;
-
-	img {
-		height: 20px;
-		width: 20px;
-	}
-
-	.settings {
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: vars.$c-light-gray;
-	}
+button, a {
+	cursor: pointer;
 }
 
 .logo {
