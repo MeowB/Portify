@@ -15,7 +15,7 @@ const resetDb = async () => {
       CREATE TABLE profiles (
         id SERIAL PRIMARY KEY,
         user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
-        image TEXT,
+        image_url TEXT,
         job_title TEXT,
         name TEXT,
         bio TEXT
@@ -24,7 +24,7 @@ const resetDb = async () => {
       CREATE TABLE projects (
         id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-        image TEXT,
+        image_url TEXT,
         project_name TEXT NOT NULL,
         demo_url TEXT,
         repository_url TEXT,

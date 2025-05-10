@@ -6,7 +6,7 @@ const router = express.Router()
 export default router.post('/createProject', async (req, res) => {
 	const {
 		userId,
-		image,
+		imageUrl,
 		projectName,
 		demoUrl,
 		repositoryUrl,
@@ -15,10 +15,10 @@ export default router.post('/createProject', async (req, res) => {
 
 	try {
 		const result = await pool.query(
-			`INSERT INTO projects (user_id, image, project_name, demo_url, repository_url, description)
+			`INSERT INTO projects (user_id, image_url, project_name, demo_url, repository_url, description)
 			VALUES ($1, $2, $3, $4, $5, $6)
 			RETURNING *`,
-			[userId, image, projectName, demoUrl, repositoryUrl, description]
+			[userId, imageUrl, projectName, demoUrl, repositoryUrl, description]
 		)
 
 		res.status(201).json(result.rows[0])

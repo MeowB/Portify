@@ -42,17 +42,27 @@
 			}
 		}
 
-		.edit-button {
-			padding: 8px 12px;
-			border-radius: 8px;
-			border: none;
-			margin-top: 16px;
-			background-color: #f2f5f9;
-
-			span {
-				margin-right: 6px;
+		.card-buttons {
+			display: flex;
+			.edit-button, .delete-button {
+				padding: 8px 12px;
+				border-radius: 8px;
+				border: none;
+				margin-top: 16px;
+				background-color: #f2f5f9;
+				display: flex;
+				span {
+					margin-right: 6px;
+				}
 			}
+			.delete-button {
+				color: #DD524C;
+				background-color: #f8d7da;
+				margin-left: 8px;
+			}
+
 		}
+
 
 		.repository-button,
 		.demo-button {

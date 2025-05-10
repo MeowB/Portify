@@ -1,20 +1,33 @@
+import bcrypt from 'bcrypt';
 import pool from '../db/db.js';
+import { configDotenv } from 'dotenv';
+
+configDotenv();
 
 const insertDummyData = async () => {
+	const secret = process.env.JWT_SECRET
+
   try {
+	const hashedPasswords = await Promise.all([
+	  bcrypt.hash('ringbearer123' + secret, 9),
+	  bcrypt.hash('king123' + secret, 9),
+	  bcrypt.hash('archer123' + secret, 9),
+	  bcrypt.hash('youShallNotPass123' + secret, 9)
+	]);
+
     // Insert users
     await pool.query(`
       INSERT INTO users (email, password)
       VALUES 
-        ('frodo@shire.com', 'ringbearer123'),
-        ('aragorn@gondor.com', 'king123'),
-        ('legolas@woodland.com', 'archer123'),
-        ('gandalf@wizard.com', 'youShallNotPass123');
-    `);
+        ('frodo@shire.com', $1),
+        ('aragorn@gondor.com', $2),
+        ('legolas@woodland.com', $3),
+        ('gandalf@wizard.com', $4);
+    `, hashedPasswords);
 
     // Insert profiles
     await pool.query(`
-      INSERT INTO profiles (user_id, image, job_title, name, bio)
+      INSERT INTO profiles (user_id, image_url, job_title, name, bio)
       VALUES 
         (1, 'https://placehold.co/40', 'Ring Bearer', 'Frodo Baggins', 'A hobbit tasked with destroying the One Ring.'),
         (2, 'https://placehold.co/40', 'King of Gondor', 'Aragorn', 'The rightful heir to the throne of Gondor.'),
@@ -24,7 +37,7 @@ const insertDummyData = async () => {
 
     // Insert projects
     await pool.query(`
-      INSERT INTO projects (user_id, image, project_name, demo_url, repository_url, description)
+      INSERT INTO projects (user_id, image_url, project_name, demo_url, repository_url, description)
       VALUES 
         -- Frodo's projects
         (1, 'https://placehold.co/220x140', 'Destroy the One Ring', 'https://demo.ring.com', 'https://github.com/frodo/ring', 'A mission to destroy the One Ring in Mount Doom.'),

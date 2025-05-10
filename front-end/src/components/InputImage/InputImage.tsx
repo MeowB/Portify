@@ -54,7 +54,7 @@ const InputImage: React.FC<InputImageProps> = ({ type, setSelectedFile, dragOver
 
 	useEffect(() => {
 		if (imageUrl) {
-			setPreview(imageUrl);
+			setPreview(imageUrl); // Updated to use 'imageUrl'
 		} else {
 			setPreview(null);
 		}

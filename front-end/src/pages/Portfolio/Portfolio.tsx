@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { getProjectsByUser } from "../../api/projects"
+import { readProjectsByUser } from "../../api/projects"
 
 import ProjectCard from "../../components/ProjectCard/ProjectCard"
 import powerIcon from '../../resources/favicon.ico'
@@ -9,11 +9,13 @@ import './Portfolio.scss'
 
 const Portfolio = () => {
 	const [projects, setProjects] = useState<ProjectType[]>([])
+	const userId = localStorage.getItem('userId')?.toString()
 
 	useEffect(() => {
 		const fetchProjects = async () => {
 			try {
-				const data = await getProjectsByUser(2)
+				const token = localStorage.getItem('token')
+				const data = await readProjectsByUser(userId, token)
 				console.log(data[0])
 				setProjects(data)
 			} catch (error) {
