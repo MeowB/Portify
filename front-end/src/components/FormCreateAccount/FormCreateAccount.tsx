@@ -4,9 +4,12 @@ import uncheckedMark from '../../resources/check-circle-1.svg'
 import checkedMark from '../../resources/check-circle.svg'
 import './FormCreateAccount.scss'
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
+import { registerUser } from '../../api/users'
 
 const FormCreateAccount = () => {
-	const [password, setPassword] = useState('');
+	const [formState, setFormState] = useState({ email: '', password: '' })
 	const [validation, setValidation] = useState({
 		hasLowerCase: false,
 		hasUpperCase: false,
@@ -14,10 +17,19 @@ const FormCreateAccount = () => {
 		hasSpecialChar: false,
 		isMinLength: false,
 	});
+	
+	const navigate = useNavigate()
+
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setFormState((prevState) => ({
+			...prevState,
+			[name]: value
+		}));
+	}
 
 	const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
-		setPassword(value);
 
 		setValidation({
 			hasLowerCase: /[a-z]/.test(value),
@@ -27,6 +39,23 @@ const FormCreateAccount = () => {
 			isMinLength: value.length >= 8,
 		});
 	};
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+
+		try {
+			const response = await registerUser(formState)
+			console.log("received token: ", response)
+			const decoded = jwtDecode<{ userId: string, email: string }>(response)
+
+			localStorage.setItem('userId', decoded.userId)
+			localStorage.setItem('email', decoded.email)
+			localStorage.setItem('token', response)
+			navigate('/profileSettings')
+		} catch (error) {
+			console.error('registration failed:', error)
+		}
+	}
 
 	return (
 		<section>
@@ -48,12 +77,27 @@ const FormCreateAccount = () => {
 				<p>or</p>
 			</div>
 
-			<form>
+			<form onSubmit={handleSubmit}>
 				<div className='form-group'>
-					<input type="email" id="email" name="email" placeholder='Enter email' />
+					<input
+						onChange={handleChange}
+						type="email"
+						id="email"
+						name="email"
+						placeholder='Enter email'
+					/>
 				</div>
 				<div className='form-group'>
-					<input onChange={(e) => handlePasswordChange(e)} type="password" id="password" name="password" placeholder='Enter a password' />
+					<input
+						onChange={(e) => {
+							handlePasswordChange(e);
+							handleChange(e);
+						}}
+						type="password"
+						id="password"
+						name="password"
+						placeholder='Enter a password'
+					/>
 					<div className="password-validation">
 						<ul>
 							<li><span><img src={validation.hasLowerCase ? checkedMark : uncheckedMark} alt="" /></span>one lower case character</li>

@@ -6,23 +6,36 @@ import powerIcon from '../../resources/favicon.ico'
 import banner from '../../resources/profile-bg.svg'
 import type { ProjectType } from "../../types/Project"
 import './Portfolio.scss'
+import { getProfile } from "../../api/profiles"
+import type { ProfileType } from "../../types/Profile"
 
 const Portfolio = () => {
 	const [projects, setProjects] = useState<ProjectType[]>([])
-	const userId = localStorage.getItem('userId')?.toString()
+	const [profile, setProfile] = useState<ProfileType>()
+	const userId = localStorage.getItem('userId')
+	const token = localStorage.getItem('token')
 
 	useEffect(() => {
 		const fetchProjects = async () => {
 			try {
-				const token = localStorage.getItem('token')
 				const data = await readProjectsByUser(userId, token)
-				console.log(data[0])
 				setProjects(data)
 			} catch (error) {
 				console.error("Error fetching projects", error)
 			}
 		}
 
+		const fetchProfile = async () => {
+			try {
+				const data = await getProfile(userId, token)
+				setProfile(data)
+
+			} catch (error) {
+				console.error('Error fetching profile', error)
+			}
+		}
+
+		fetchProfile()
 		fetchProjects()
 	}, [])
 
@@ -39,8 +52,8 @@ const Portfolio = () => {
 				</div>
 				<div className="portfolio-content">
 					<div className="title">
-						<h1>Name Lastname</h1>
-						<p>Front-end developer</p>
+						<h1>{profile?.name}</h1>
+						<p>{profile?.jobTitle}</p>
 					</div>
 					<button className="contact-button">
 						<span>
@@ -52,7 +65,7 @@ const Portfolio = () => {
 					</button>
 					<div className="bio">
 						<h3>Bio</h3>
-						<p>Passionate front-end developer with a knack for creating intuitive and visually appealing user interfaces. Always eager to learn and explore new technologies.</p>
+						<p>{profile?.bio}</p>
 					</div>
 				</div>
 

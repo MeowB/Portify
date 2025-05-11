@@ -9,7 +9,8 @@ const ProjectCard = ({ type, project, setSelectedProject, setIsEditing }: { type
 
 	const handleClickDelete = async () => {
 		try {
-			const result = await deleteProject(project)
+			const token = localStorage.getItem('token')
+			const result = await deleteProject(project, token)
 			console.log(result.data)
 		} catch (error) {
 			console.error('Error deleting project', error)

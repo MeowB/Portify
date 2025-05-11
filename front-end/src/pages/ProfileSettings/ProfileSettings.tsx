@@ -1,13 +1,37 @@
 import type React from 'react'
 import './ProfileSettings.scss'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import InputImage from '../../components/InputImage/InputImage'
 import NavBar from '../../components/NavBar/NavBar'
+import { getProfile } from '../../api/profiles'
+import { updateProfile } from '../../api/profiles'
 
 
 const ProfileSettings = () => {
 	const [selectedFile, setSelectedFile] = useState<File | null>(null)
 	const [dragOver, setDragOver] = useState(false);
+	const [profile, setProfile] = useState({
+		email: '',
+		jobTitle: '',
+		imageUrl: '',
+		name: '',
+		bio: '',
+		id: ''
+	});
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		try {
+			const token = localStorage.getItem('token');
+			if (!token) {
+				throw new Error('No token found in localStorage');
+			}
+			const result = await updateProfile(profile, token);
+			console.log('Profile updated successfully:', result);
+		} catch (error) {
+			console.error('Error updating profile:', error);
+		}
+	};
 
 	// Handle drag over event to add visual effect
 	const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -19,6 +43,33 @@ const ProfileSettings = () => {
 		setDragOver(false);
 	};
 
+	useEffect(() => {
+		const fetchProfile = async () => {
+			try {
+				const token = localStorage.getItem('token');
+				const userId = localStorage.getItem('userId');
+				const email = localStorage.getItem('email');
+
+				if (!userId || !email) {
+					throw new Error('Missing userId or email in localStorage');
+				}
+
+				const profileData = await getProfile(userId, token);
+				console.log(profileData)
+				setProfile({
+					email: email,
+					jobTitle: profileData.jobTitle,
+					imageUrl: profileData.imageUrl,
+					name: profileData.name,
+					bio: profileData.bio,
+					id: profileData.id
+				});
+			} catch (error) {
+				console.error('Error fetching profile:', error);
+			}
+		};
+		fetchProfile();
+	}, []);
 
 	return (
 		<>
@@ -33,23 +84,44 @@ const ProfileSettings = () => {
 					<h1>Profile settings</h1>
 				</div>
 				<section className="profile-form">
-					<form className="form">
-						<InputImage type='profile' setSelectedFile={setSelectedFile} selectedFile={selectedFile} dragOver={dragOver} />
+					<form className="form" onSubmit={handleSubmit}>
+						<InputImage type='profile' setSelectedFile={setSelectedFile} selectedFile={selectedFile} dragOver={dragOver} imageUrl={profile.imageUrl} />
 						<div className="form-group">
 							<label htmlFor="email" className="form-label">Email</label>
-							<input type="email" id="email" className="form-input" placeholder="Enter your email" />
+							<input type="email" id="email" className="form-input" value={profile.email} readOnly />
 						</div>
 						<div className="form-group">
 							<label htmlFor="jobTitle" className="form-label">Job Title</label>
-							<input type="text" id="jobTitle" className="form-input" placeholder="Enter your job title" />
+							<input
+								type="text"
+								id="jobTitle"
+								className="form-input"
+								placeholder="Enter your job title"
+								value={profile.jobTitle}
+								onChange={(e) => setProfile({ ...profile, jobTitle: e.target.value })}
+							/>
 						</div>
 						<div className="form-group">
 							<label htmlFor="name" className="form-label">Name</label>
-							<input type="text" id="name" className="form-input" placeholder="Enter your name" />
+							<input
+								type="text"
+								id="name"
+								className="form-input"
+								placeholder="Enter your name"
+								value={profile.name}
+								onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+							/>
 						</div>
 						<div className="form-group bio">
 							<label htmlFor="bio" className="form-label">Bio</label>
-							<textarea id="bio" className="form-input" placeholder="Enter a short introduction.." rows={4}></textarea>
+							<textarea
+								id="bio"
+								className="form-input"
+								placeholder="Enter a short introduction.."
+								rows={4}
+								value={profile.bio}
+								onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+							></textarea>
 						</div>
 						<button type="submit" className="form-submit">
 							<span>

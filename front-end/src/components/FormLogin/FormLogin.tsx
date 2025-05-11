@@ -3,7 +3,7 @@ import powerIcon from '../../resources/favicon.ico'
 
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import loginUser from '../../api/users'
+import { loginUser } from '../../api/users'
 import { jwtDecode } from 'jwt-decode'
 
 const FormLogin = () => {
@@ -24,10 +24,12 @@ const FormLogin = () => {
 
 		try {
 			const response = await loginUser(formState)
-			const decoded = jwtDecode<{ userId: string  }>(response)
+			const decoded = jwtDecode<{ userId: string, email: string   }>(response)
 
 			localStorage.setItem('userId', decoded.userId)
+			localStorage.setItem('email', decoded.email)
 			localStorage.setItem('token', response)
+			
 			navigate('/profileSettings')
 		} catch (error) {
 			console.error('Login failed:', error)

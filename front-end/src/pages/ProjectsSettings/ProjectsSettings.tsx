@@ -69,7 +69,8 @@ const ProjectsSettings = () => {
 
 
 			try {
-				const result = await updateProject(updatedProject);
+				const token = localStorage.getItem('token')
+				const result = await updateProject(updatedProject, token);
 				console.log(result);
 
 			} catch (error) {
@@ -82,15 +83,17 @@ const ProjectsSettings = () => {
 
 	const handleAddSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault()
+		const userId = Number(localStorage.getItem('userId'))
 		const newProjectForm = {
-			userId: 2,
+			userId: userId,
 			...formState,
 			imageUrl: formState.imageUrl || 'https://placehold.co/220x140' // Set default if empty
 		}
 
 
 		try {
-			const result = await createProject(newProjectForm)
+			const token = localStorage.getItem('token')
+			const result = await createProject(newProjectForm, token)
 			console.log(result)
 		} catch (error) {
 			console.error("Error creating project", error)
@@ -106,8 +109,10 @@ const ProjectsSettings = () => {
 					console.error('Token is missing from localStorage');
 					return;
 				}
-				const data = await readProjectsByUser(userId, token); // Ensure the token is passed correctly
-				setProjects(data);
+				const data = await readProjectsByUser(userId, token);
+				if (data) {
+					setProjects(data);
+				}
 			} catch (error) {
 				console.error('Error fetching projects:', error);
 			}

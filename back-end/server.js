@@ -11,6 +11,9 @@ import login from './routes/auth/login.js'
 import register from './routes/auth/register.js'
 import authenticateToken from './middleware/authMiddleware.js'
 
+import readSingleProfileByUserId from './routes/profiles/readSingleProfileByUserId.js';
+import updateProfileById from './routes/profiles/updateProfileById.js';
+
 const app = express();
 app.use(cors())
 
@@ -29,6 +32,8 @@ app.use('/api/projects', authenticateToken, deleteProjectById)
 app.use('/api/auth', login)
 app.use('/api/auth', register)
 
+app.use('/api/profiles', authenticateToken, readSingleProfileByUserId)
+app.use('/api/profiles', authenticateToken, updateProfileById)
 
 app.listen(PORT, () => {
 	console.log(`Server running at http://localhost:${PORT}`);

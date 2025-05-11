@@ -10,9 +10,21 @@ const loginUser = async (user: UserType) => {
 
 		return response.data.token
 	} catch (error) {
-		console.error('Login failed:', error)
+		console.error('Login failed: ', error)
 		alert('Invalid credentials. Please try again.')
 	}
 }
 
-export default loginUser
+const registerUser = async (user: UserType) => {
+	try {
+		console.log('user: ', user)
+		const response = await axios.post(`${API_BASE}/register`, user)
+		console.log('response: ', response)
+
+		return response.data.token
+	} catch (error) {
+		console.error('Registration failed: ', error)
+	}
+}
+
+export { loginUser, registerUser}
