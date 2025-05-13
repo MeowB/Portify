@@ -7,8 +7,7 @@ const loginUser = async (user: UserType) => {
 
 	try {
 		const response = await axios.post(`${API_BASE}/login`, user)
-
-		return response.data.token
+		return response.data
 	} catch (error) {
 		console.error('Login failed: ', error)
 		alert('Invalid credentials. Please try again.')
@@ -21,7 +20,7 @@ const registerUser = async (user: UserType) => {
 		const response = await axios.post(`${API_BASE}/register`, user)
 		console.log('response: ', response)
 
-		return response.data.token
+		return response.data
 	} catch (error) {
 		console.error('Registration failed: ', error)
 	}

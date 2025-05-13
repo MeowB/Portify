@@ -1,6 +1,9 @@
 import express from 'express'
 import cors from 'cors'
 import pingRouter from './routes/pingPong.js';
+import authenticateToken from './middleware/authMiddleware.js'
+
+import uploadUrl from './routes/aws/uploadPresignedUrl.js'
 
 import createNewProject from './routes/projects/createNewProject.js';
 import readAllProjectByUserId from './routes/projects/readAllByUserId.js';
@@ -9,7 +12,6 @@ import deleteProjectById from './routes/projects/deleteProjectById.js';
 
 import login from './routes/auth/login.js'
 import register from './routes/auth/register.js'
-import authenticateToken from './middleware/authMiddleware.js'
 
 import readSingleProfileByUserId from './routes/profiles/readSingleProfileByUserId.js';
 import updateProfileById from './routes/profiles/updateProfileById.js';
@@ -23,6 +25,8 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 
 app.use(pingRouter);
+
+app.use('/api/aws', uploadUrl)
 
 app.use('/api/projects', authenticateToken, createNewProject)
 app.use('/api/projects', authenticateToken, readAllProjectByUserId)

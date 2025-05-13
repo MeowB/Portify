@@ -48,9 +48,19 @@
 			background-color: #cdd5e0;
 			overflow: hidden;
 
-			.profile-preview {
-				max-height: 40px;
-				margin: auto;
+			.preview-wrapper {
+				position: relative;
+				width: 40px;
+				height: 40px;
+				.profile-preview {
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					position: absolute;
+					width: 100%;
+					border-radius: 50%;
+				}
+
 			}
 
 		}

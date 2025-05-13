@@ -24,11 +24,13 @@ const FormLogin = () => {
 
 		try {
 			const response = await loginUser(formState)
-			const decoded = jwtDecode<{ userId: string, email: string   }>(response)
+			const decoded = jwtDecode<{ userId: string, email: string, imageUrl:string   }>(response.token)
+
 
 			localStorage.setItem('userId', decoded.userId)
 			localStorage.setItem('email', decoded.email)
-			localStorage.setItem('token', response)
+			localStorage.setItem('imageUrl', decoded.imageUrl)
+			localStorage.setItem('token', response.token)
 			
 			navigate('/profileSettings')
 		} catch (error) {

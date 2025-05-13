@@ -22,6 +22,13 @@ nav {
 			justify-content: center;
 			align-items: center;
 			background-color: vars.$c-light-gray;
+			overflow: hidden;
+
+			img {
+				width: 100%;
+				height: auto;
+
+			}
 		}
 
 		.tooltip {

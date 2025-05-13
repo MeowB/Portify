@@ -5,6 +5,7 @@ import InputImage from '../../components/InputImage/InputImage'
 import NavBar from '../../components/NavBar/NavBar'
 import { getProfile } from '../../api/profiles'
 import { updateProfile } from '../../api/profiles'
+import { handleImageUpload } from '../../api/aws'
 
 
 const ProfileSettings = () => {
@@ -21,12 +22,26 @@ const ProfileSettings = () => {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
 		try {
 			const token = localStorage.getItem('token');
 			if (!token) {
 				throw new Error('No token found in localStorage');
 			}
-			const result = await updateProfile(profile, token);
+
+			let updatedProfile = { ...profile }
+
+			if (selectedFile) {
+				const imageUrl = await handleImageUpload(selectedFile, profile.id, selectedFile.name, 'profile');
+
+				if (!imageUrl) {
+					throw new Error('Image upload failed');
+				}
+
+				updatedProfile = { ...updatedProfile, imageUrl: imageUrl};
+			}
+			const result = await updateProfile(updatedProfile, token);
+
 			console.log('Profile updated successfully:', result);
 		} catch (error) {
 			console.error('Error updating profile:', error);
@@ -49,6 +64,8 @@ const ProfileSettings = () => {
 				const token = localStorage.getItem('token');
 				const userId = localStorage.getItem('userId');
 				const email = localStorage.getItem('email');
+
+				console.log(userId, token)
 
 				if (!userId || !email) {
 					throw new Error('Missing userId or email in localStorage');

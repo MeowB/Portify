@@ -15,7 +15,7 @@ export default router.post('/login', async (req, res) => {
 		const result = await db.query(`SELECT * FROM users WHERE email = $1`, [email])
 		const user = result.rows[0]
 
-		if(!user) {
+		if (!user) {
 			return res.status(401).json({ error: 'Invalid credentials' })
 		}
 
@@ -24,15 +24,17 @@ export default router.post('/login', async (req, res) => {
 		if (!match) {
 			return res.status(401).json({ error: 'Invalid credentials' })
 		}
+		const profileResult = await db.query(`SELECT image_url FROM profiles WHERE user_id = $1`, [user.id]);
+		const profile = profileResult.rows[0]
 
-		const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, {
+		const token = jwt.sign({ userId: user.id, email: user.email, imageUrl: profile.image_url }, process.env.JWT_SECRET, {
 			expiresIn: '1h',
 		})
 
 		res.status(200).json({ token })
 
 	} catch (error) {
-		res.status(500).json({ error: error.message})
+		res.status(500).json({ error: error.message })
 	}
 })
 
