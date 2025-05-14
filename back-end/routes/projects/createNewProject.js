@@ -1,5 +1,6 @@
 import express from 'express'
 import pool from '../../db/db.js'
+import uploadPresignedUrl from '../aws/uploadPresignedUrl.js'
 
 const router = express.Router()
 
@@ -20,6 +21,7 @@ export default router.post('/createProject', async (req, res) => {
 			RETURNING *`,
 			[userId, imageUrl, projectName, demoUrl, repositoryUrl, description]
 		)
+
 
 		res.status(201).json(result.rows[0])
 	} catch (error) {

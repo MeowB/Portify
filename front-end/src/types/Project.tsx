@@ -1,20 +1,12 @@
 interface ProjectType {
-	id: number;
+	id: string;
 	imageUrl: string;
 	projectName: string;
 	description: string;
 	demoUrl: string;
 	repositoryUrl: string;
-}
-
-interface NewProjectType {
-	userId: number;
-	imageUrl: string;
-	projectName: string;
-	demoUrl: string;
-	repositoryUrl: string;
-	description: string;
+	userId: string
 }
 
 
-export type { ProjectType, NewProjectType }
+export type { ProjectType }

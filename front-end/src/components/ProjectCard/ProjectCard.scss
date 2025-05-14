@@ -7,16 +7,24 @@
 	padding: 12px;
 	margin-top: 36px;
 	border-radius: 8px;
+	.project-image {
+		position: relative;
+		width: 200px;
+		height: 140px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #cdd5e0;
+		overflow: hidden;
+		border-radius: 8px;
 
-	.image-wrapper {
-		width: 220px;
-		flex-shrink: 0;
-
-		img {
-			width: 100%;
-			height: auto;
-			display: block;
-			border-radius: 8px;
+		.project-preview { // Remove dependency on .preview-wrapper
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			max-width: auto;
+			height: 140px;
 		}
 	}
 
@@ -44,17 +52,21 @@
 
 		.card-buttons {
 			display: flex;
-			.edit-button, .delete-button {
+
+			.edit-button,
+			.delete-button {
 				padding: 8px 12px;
 				border-radius: 8px;
 				border: none;
 				margin-top: 16px;
 				background-color: #f2f5f9;
 				display: flex;
+
 				span {
 					margin-right: 6px;
 				}
 			}
+
 			.delete-button {
 				color: #DD524C;
 				background-color: #f8d7da;

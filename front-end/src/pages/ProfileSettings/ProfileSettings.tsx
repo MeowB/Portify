@@ -33,16 +33,20 @@ const ProfileSettings = () => {
 
 			if (selectedFile) {
 				const imageUrl = await handleImageUpload(selectedFile, profile.id, selectedFile.name, 'profile');
+				if (imageUrl) {
+					localStorage.setItem('imageUrl', imageUrl)
+				}
 
 				if (!imageUrl) {
 					throw new Error('Image upload failed');
 				}
 
-				updatedProfile = { ...updatedProfile, imageUrl: imageUrl};
+				updatedProfile = { ...updatedProfile, imageUrl: imageUrl };
 			}
 			const result = await updateProfile(updatedProfile, token);
 
 			console.log('Profile updated successfully:', result);
+
 		} catch (error) {
 			console.error('Error updating profile:', error);
 		}

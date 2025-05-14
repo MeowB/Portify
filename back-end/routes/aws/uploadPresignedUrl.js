@@ -1,12 +1,17 @@
 import express from 'express'
 import getPresignedUploadUrl from '../../utils/aws/getPresignedUploadUrl.js'
 import generateImageName from '../../utils/generateImageName.js'
+import getKeyFromS3Url from '../../utils/aws/getKeyFromS3Url.js'
+import db from '../../db/db.js'
+import { deleteImageFromS3 } from '../../utils/aws/deleteImageFromS3.js'
 
 const router = express.Router()
 
 export default router.post('/uploadUrl', async (req, res) => {
 	try {
-		const { userId, title, imageType, mimeType } = req.body
+		console.log('hitting route')
+		const { userId, title, imageType, mimeType, projectId } = req.body
+
 
 
 		if (!userId || !title || !imageType) {
@@ -17,6 +22,20 @@ export default router.post('/uploadUrl', async (req, res) => {
 
 		try {
 			const uploadUrl = await getPresignedUploadUrl(imageName, mimeType)
+
+			if (imageType === 'profile') {
+				const result = await db.query(`SELECT image_url FROM profiles WHERE user_id = ${userId}`)
+				const oldImageUrl = getKeyFromS3Url(result.rows[0].image_url)
+
+				await deleteImageFromS3(oldImageUrl)
+			} else if (imageType === 'project' && projectId) {
+				const result = await db.query(`SELECT image_url FROM projects WHERE id = $1`, [projectId])
+
+				const oldImageUrl = getKeyFromS3Url(result.rows[0].image_url)
+
+				await deleteImageFromS3(oldImageUrl)
+			}
+
 			res.json({ uploadUrl, imageName })
 		} catch (error) {
 			console.error('Could not generate upload URL', error)

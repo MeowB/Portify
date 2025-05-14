@@ -13,7 +13,7 @@ nav {
 	}
 
 	.settings {
-		.profile-image{
+		.profile-image {
 			position: relative;
 			width: 40px;
 			height: 40px;
@@ -25,8 +25,8 @@ nav {
 			overflow: hidden;
 
 			img {
-				width: 100%;
-				height: auto;
+				height: 100%;
+				width: auto;
 
 			}
 		}
@@ -49,6 +49,15 @@ nav {
 				width: 100%;
 				border-bottom: 1px solid vars.$c-light-gray;
 				padding: 18px 16px;
+
+				.profile-image {
+
+					img {
+						height: 100%;
+						width: auto;
+
+					}
+				}
 
 				.text {
 					align-items: flex-start;

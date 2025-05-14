@@ -2,14 +2,13 @@ import React from 'react'
 import NavBar from '../../components/NavBar/NavBar';
 import InputImage from '../../components/InputImage/InputImage';
 import { useState, useEffect } from 'react';
-import { readProjectsByUser, updateProject, createProject } from '../../api/projects';
+import { readProjectsByUser, updateProject, createProject, getProjectId } from '../../api/projects';
 import './ProjectsSettings.scss'
 import ProjectCard from '../../components/ProjectCard/ProjectCard';
 import type { ProjectType } from '../../types/Project';
-import { useNavigate } from 'react-router-dom';
+import { handleImageUpload } from '../../api/aws';
 
 const ProjectsSettings = () => {
-	const navigate = useNavigate()
 	const userId = localStorage.getItem('userId')?.toString()
 	const [selectedFile, setSelectedFile] = useState<File | null>(null)
 	const [dragOver, setDragOver] = useState(false);
@@ -17,6 +16,7 @@ const ProjectsSettings = () => {
 	const [selectedProject, setSelectedProject] = useState<ProjectType | null>(null)
 	const [isEditing, setIsEditing] = useState<boolean>(false)
 	const [isCreating, setIsCreating] = useState<boolean>(false)
+	const [debouncedProjects, setDebouncedProjects] = useState(projects);
 	const [formState, setFormState] = useState({
 		imageUrl: '',
 		projectName: '',
@@ -24,8 +24,26 @@ const ProjectsSettings = () => {
 		repositoryUrl: '',
 		description: ''
 	});
+	
+	const fetchProjects = async () => {
+		try {
+			const token = localStorage.getItem('token')
+			if (!token) {
+				console.error('Token is missing from localStorage');
+				return;
+			}
+			if (userId) {
+				const data = await readProjectsByUser(userId, token);
+				if (data) {
+					setProjects([...data]);
+					console.log(data)
+				}
+			}
+		} catch (error) {
+			console.error('Error fetching projects:', error);
+		}
+	};
 
-	// Handle drag over event to add visual effect
 	const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault();
 		setDragOver(true);
@@ -58,68 +76,93 @@ const ProjectsSettings = () => {
 		setIsCreating(true)
 	}
 
+
 	const handleEditSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		if (selectedProject) {
-			const updatedProject = {
+			let updatedProject = {
 				...selectedProject,
 				...formState,
-				imageUrl: formState.imageUrl || 'https://placehold.co/220x140' // Set default if empty
+				imageUrl: formState.imageUrl || 'https://placehold.co/220x140'
 			};
 
-
 			try {
-				const token = localStorage.getItem('token')
-				const result = await updateProject(updatedProject, token);
-				console.log(result);
+				// Upload the image if a file is selected
+				if (selectedFile) {
+					const imageUrl = await handleImageUpload(selectedFile, selectedProject.id, selectedFile.name, 'project', updatedProject?.id);
+					console.log('image url: ', imageUrl)
+					if (!imageUrl) {
+						throw new Error('Image upload failed');
+					}
+					updatedProject = { ...updatedProject, imageUrl: imageUrl };
+				}
 
+				setIsEditing(false);
+				setIsCreating(false)
+				setDebouncedProjects(projects)
+				const token = localStorage.getItem('token');
+				await updateProject(updatedProject, token);
+
+				alert('Project updated successfully');
+				await fetchProjects();
 			} catch (error) {
-				console.error('Failed to edit project')
+				console.error('Failed to edit project:', error);
 			}
-
 		}
 	}
 
 
 	const handleAddSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-		e.preventDefault()
-		const userId = Number(localStorage.getItem('userId'))
-		const newProjectForm = {
+		e.preventDefault();
+		const userId = localStorage.getItem('userId');
+		if (!userId) {
+			throw new Error('User ID not found in local storage')
+		}
+
+		let newProjectForm = {
 			userId: userId,
 			...formState,
-			imageUrl: formState.imageUrl || 'https://placehold.co/220x140' // Set default if empty
-		}
-
+			imageUrl: 'https://placehold.co/220x140',
+			id: ''
+		};
 
 		try {
-			const token = localStorage.getItem('token')
-			const result = await createProject(newProjectForm, token)
-			console.log(result)
-		} catch (error) {
-			console.error("Error creating project", error)
-		}
+			const token = localStorage.getItem('token');
 
+			await createProject(newProjectForm, token);
+
+
+			if (token) {
+				const result = await getProjectId(formState?.projectName, token);
+				newProjectForm = { ...newProjectForm, id: result.id };
+				if (selectedFile) {
+					const imageUrl = await handleImageUpload(selectedFile, result.id, selectedFile.name, 'project', newProjectForm.id);
+					if (!imageUrl) {
+						throw new Error('Image upload failed');
+					}
+					newProjectForm = { ...newProjectForm, imageUrl: imageUrl };
+
+					setDebouncedProjects(projects)
+					await updateProject(newProjectForm, token);
+				}
+
+				alert('Project created successfully');
+				await fetchProjects();
+			}
+
+		} catch (error) {
+			console.error('Error creating project:', error);
+		}
 	}
 
 	useEffect(() => {
-		const fetchProjects = async () => {
-			try {
-				const token = localStorage.getItem('token')
-				if (!token) {
-					console.error('Token is missing from localStorage');
-					return;
-				}
-				const data = await readProjectsByUser(userId, token);
-				if (data) {
-					setProjects(data);
-				}
-			} catch (error) {
-				console.error('Error fetching projects:', error);
-			}
+		const timeoutId = setTimeout(() => {
+			fetchProjects();
+		}, 500);
+		return () => {
+			clearTimeout(timeoutId);
 		};
-
-		fetchProjects();
-	}, [selectedProject])
+	}, [debouncedProjects])
 
 	useEffect(() => {
 		if (selectedProject) {
@@ -218,7 +261,7 @@ const ProjectsSettings = () => {
 										className="form-submit"
 										onClick={(e) => {
 											handleAddSubmit(e);
-											navigate(0);
+											setIsCreating(!isCreating)
 										}}
 									>
 										<span>
@@ -232,7 +275,6 @@ const ProjectsSettings = () => {
 
 									<button type="submit" className="form-submit" onClick={(e) => {
 										handleEditSubmit(e);
-										navigate(0);
 									}}>
 										<span>
 											<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -250,7 +292,9 @@ const ProjectsSettings = () => {
 				}
 
 				<section className="projects">
+
 					{projects.map((project) => <ProjectCard type='settings' project={project} setSelectedProject={setSelectedProject} setIsEditing={setIsEditing} />)}
+
 				</section>
 			</main>
 		</>

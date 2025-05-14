@@ -9,6 +9,7 @@ import createNewProject from './routes/projects/createNewProject.js';
 import readAllProjectByUserId from './routes/projects/readAllByUserId.js';
 import updateProjectById from './routes/projects/updateProjectById.js';
 import deleteProjectById from './routes/projects/deleteProjectById.js';
+import getProjectIdByFileName from './routes/projects/getProjectIdByFileName.js';
 
 import login from './routes/auth/login.js'
 import register from './routes/auth/register.js'
@@ -32,6 +33,7 @@ app.use('/api/projects', authenticateToken, createNewProject)
 app.use('/api/projects', authenticateToken, readAllProjectByUserId)
 app.use('/api/projects', authenticateToken, updateProjectById)
 app.use('/api/projects', authenticateToken, deleteProjectById)
+app.use('/api/projects', authenticateToken, getProjectIdByFileName)
 
 app.use('/api/auth', login)
 app.use('/api/auth', register)
