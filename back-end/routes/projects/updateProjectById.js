@@ -13,6 +13,7 @@ export default router.put('/updateProject/:id', async (req, res) => {
 	} = req.body
 
 	try {
+		console.log(req.params.id)
 		const result = await pool.query(
 			`UPDATE projects
 			SET image_url = $1, project_name = $2, demo_url = $3, repository_url = $4, description = $5

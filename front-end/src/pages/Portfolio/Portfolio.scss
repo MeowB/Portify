@@ -18,23 +18,24 @@
 	width: 100%;
 	position: relative;
 
-	.profile-image {
-		position: absolute;
-		background-color: #fff;
-		width: 168px;
-		height: 168px;
-		border-radius: 50%;
-		transform: translateY(-50%);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		img {
-			width: 160px;
-			height: 160px;
-			border-radius: 50%;
-		}
-	}
+.profile-image {
+	position: absolute;
+	background-color: #fff;
+	width: 180px;
+	height: 180px;
+	border-radius: 50%;
+	transform: translateY(-50%);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	box-shadow: 0 0 0 4px vars.$c-white;
 
+	img {
+		height: 180px;
+		width: auto;
+	}
+}
 	.portfolio-content {
 		margin-top: 104px;
 

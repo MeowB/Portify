@@ -12,10 +12,16 @@ import type { ProfileType } from "../../types/Profile"
 const Portfolio = () => {
 	const [projects, setProjects] = useState<ProjectType[]>([])
 	const [profile, setProfile] = useState<ProfileType>()
+	const [imageUrl, setImageUrl] = useState<string | null>(localStorage.getItem('imageUrl') || '')
 	const userId = localStorage.getItem('userId')
 	const token = localStorage.getItem('token')
 
 	useEffect(() => {
+		const fetchImgUrl = () => {
+			const imgUrl = localStorage.getItem('imageUrl');
+			setImageUrl(imgUrl);
+		}
+
 		const fetchProjects = async () => {
 			try {
 				const data = await readProjectsByUser(userId, token)
@@ -37,6 +43,8 @@ const Portfolio = () => {
 
 		fetchProfile()
 		fetchProjects()
+		fetchImgUrl()
+
 	}, [])
 
 
@@ -48,7 +56,7 @@ const Portfolio = () => {
 			</header>
 			<main className="portfolio">
 				<div className="profile-image">
-					<img src="https://placehold.co/160" alt="" />
+					<img src={imageUrl ? imageUrl : 'https://placehold.co/40'} alt="" />
 				</div>
 				<div className="portfolio-content">
 					<div className="title">

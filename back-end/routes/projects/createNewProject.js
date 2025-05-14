@@ -14,6 +14,8 @@ export default router.post('/createProject', async (req, res) => {
 		description
 	} = req.body
 
+	console.log(repositoryUrl)
+
 	try {
 		const result = await pool.query(
 			`INSERT INTO projects (user_id, image_url, project_name, demo_url, repository_url, description)

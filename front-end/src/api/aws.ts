@@ -49,7 +49,6 @@ const handleImageUpload = async (file: File, userId: string, title: string, imag
 		console.log('handleImageUpload')
 	try {
 		if (projectId) {
-
 			const result = await getUploadUrl(userId, title, imageType, file.type, projectId);
 
 			if (!result) {
@@ -68,7 +67,27 @@ const handleImageUpload = async (file: File, userId: string, title: string, imag
 	
 			// Return the image URL
 			return imageUrl;
-		} 
+		} else {
+			
+			const result = await getUploadUrl(userId, title, imageType, file.type);
+
+			if (!result) {
+				throw new Error('Failed to get upload URL');
+			}
+			const { uploadUrl, imageName } = result;
+	
+			// Upload image to S3
+			await uploadImageToS3(file, uploadUrl);
+	
+			console.log(`Image uploaded successfully to S3 with name: ${imageName}`);
+	
+			// Construct the image URL
+			const imageUrl = `http://portify-user-images.s3.eu-north-1.amazonaws.com/${imageName}`;
+			console.log(`Image URL: ${imageUrl}`);
+	
+			// Return the image URL
+			return imageUrl;
+		}
 
 
 	} catch (error) {

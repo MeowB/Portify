@@ -9,7 +9,6 @@ const router = express.Router()
 
 export default router.post('/uploadUrl', async (req, res) => {
 	try {
-		console.log('hitting route')
 		const { userId, title, imageType, mimeType, projectId } = req.body
 
 
@@ -32,6 +31,7 @@ export default router.post('/uploadUrl', async (req, res) => {
 				const result = await db.query(`SELECT image_url FROM projects WHERE id = $1`, [projectId])
 
 				const oldImageUrl = getKeyFromS3Url(result.rows[0].image_url)
+				console.log(oldImageUrl)
 
 				await deleteImageFromS3(oldImageUrl)
 			}

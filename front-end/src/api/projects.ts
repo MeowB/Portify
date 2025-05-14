@@ -19,6 +19,7 @@ export const readProjectsByUser = async (id: string | null, token: string | null
 };
 
 export const updateProject = async (project: ProjectType, token: string | null) => {
+	console.log('update project: ', project)
 	const res = await axios.put(`${API_BASE}/updateProject/${project.id}`, project, {
 		headers: { Authorization: `Bearer ${token}` }, // Include token in headers
 	});

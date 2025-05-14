@@ -9,6 +9,7 @@ import type { ProjectType } from '../../types/Project';
 import { handleImageUpload } from '../../api/aws';
 
 const ProjectsSettings = () => {
+	const token = localStorage.getItem('token');
 	const userId = localStorage.getItem('userId')?.toString()
 	const [selectedFile, setSelectedFile] = useState<File | null>(null)
 	const [dragOver, setDragOver] = useState(false);
@@ -24,7 +25,7 @@ const ProjectsSettings = () => {
 		repositoryUrl: '',
 		description: ''
 	});
-	
+
 	const fetchProjects = async () => {
 		try {
 			const token = localStorage.getItem('token')
@@ -88,8 +89,10 @@ const ProjectsSettings = () => {
 
 			try {
 				// Upload the image if a file is selected
-				if (selectedFile) {
-					const imageUrl = await handleImageUpload(selectedFile, selectedProject.id, selectedFile.name, 'project', updatedProject?.id);
+				if (selectedFile && token) {
+					const result = await getProjectId(formState?.projectName, token);
+					console.log('selected id: ', result.id)
+					const imageUrl = await handleImageUpload(selectedFile, selectedProject.id, selectedFile.name, 'project', result.id);
 					console.log('image url: ', imageUrl)
 					if (!imageUrl) {
 						throw new Error('Image upload failed');
@@ -100,9 +103,7 @@ const ProjectsSettings = () => {
 				setIsEditing(false);
 				setIsCreating(false)
 				setDebouncedProjects(projects)
-				const token = localStorage.getItem('token');
 				await updateProject(updatedProject, token);
-
 				alert('Project updated successfully');
 				await fetchProjects();
 			} catch (error) {
@@ -127,7 +128,6 @@ const ProjectsSettings = () => {
 		};
 
 		try {
-			const token = localStorage.getItem('token');
 
 			await createProject(newProjectForm, token);
 
@@ -142,8 +142,11 @@ const ProjectsSettings = () => {
 					}
 					newProjectForm = { ...newProjectForm, imageUrl: imageUrl };
 
+					console.log(newProjectForm)
+					setIsEditing(false);
+					setIsCreating(false)
 					setDebouncedProjects(projects)
-					await updateProject(newProjectForm, token);
+					await createProject(newProjectForm, token);
 				}
 
 				alert('Project created successfully');
@@ -261,7 +264,6 @@ const ProjectsSettings = () => {
 										className="form-submit"
 										onClick={(e) => {
 											handleAddSubmit(e);
-											setIsCreating(!isCreating)
 										}}
 									>
 										<span>
